@@ -137,7 +137,7 @@
          */
         if(settings['savenow'] == true)
         {
-            var form_data = getFormData(theform, settings['exclude']);
+            var form_data = getFormData(theform);
             autoSaveCookie(form_data);
 
             return true;
@@ -210,13 +210,13 @@
             {
                 $(this).change(function()
                 {
-                    var form_data = getFormData(theform, settings['exclude']);
+                    var form_data = getFormData(theform);
                     autoSaveCookie(form_data);
                 });
 
                 $(this).keyup(function()
                 {
-                    var form_data = getFormData(theform, settings['exclude']);
+                    var form_data = getFormData(theform);
                     autoSaveCookie(form_data);
                 });
             });
@@ -230,8 +230,27 @@
         {
             var cookieString = '';
 
+            excludeList   = settings['exclude'];
+
             jQuery.each(data, function(i, field)
             {
+
+                fieldObject   = $("[name='" + field.name +"']")
+
+                fieldObjectId =  $(fieldObject).attr('id');
+
+                if( fieldObjectId == undefined ){
+                    return true;
+                }
+
+                isExcludeConfigured = ( jQuery.inArray( fieldObjectId, excludeList  ) !== -1 ) ;
+                
+                hasExcludeAttribute = ( $(fieldObject).attr( 'data-sayt-exclude' ) != undefined );
+                
+                if( hasExcludeAttribute || isExcludeConfigured ){
+                    return true;
+                }
+
                 cookieString = cookieString + field.name + ':::--FIELDANDVARSPLITTER--:::' + field.value + ':::--FORMSPLITTERFORVARS--:::';
             });
 
@@ -255,9 +274,9 @@
         }
 
         /*
-         * Serialize the form data, omit excluded fields marked with data-sayt-exclude attribute.
+         * Serialize the form data
          */
-        function getFormData(theform, excludeSelectors)
+        function getFormData(theform )
         {
             //
             // This is here because jQuery's clone method is basically borked.
@@ -265,13 +284,6 @@
             // Once they fix that, we'll put it back.
             //
             var workingObject = $.extend({}, theform);
-
-            var elementsToRemove = workingObject.find('[data-sayt-exclude]');
-            elementsToRemove.remove();
-            for (i in excludeSelectors) {
-                elementsToRemove = workingObject.find(excludeSelectors[i]);
-                elementsToRemove.remove();
-            }
 
             var form_data = workingObject.serializeArray();
             return form_data;
