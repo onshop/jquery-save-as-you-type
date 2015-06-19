@@ -243,11 +243,11 @@
                     return true;
                 }
 
-                isExcludedConfigured = ( jQuery.inArray( fieldObjectId, excludeList  ) !== -1 ) ;
+                isExcludeConfigured = ( jQuery.inArray( fieldObjectId, excludeList  ) !== -1 ) ;
                 
-                hasExcludedAttribute = ( $(fieldObject).attr( 'data-sayt-exclude' ) != undefined );
+                hasExcludeAttribute = ( $(fieldObject).attr( 'data-sayt-exclude' ) != undefined );
                 
-                if( hasExcludedAttribute || isExcludedConfigured ){
+                if( hasExcludeAttribute || isExcludeConfigured ){
                     return true;
                 }
 
