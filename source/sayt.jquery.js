@@ -220,6 +220,12 @@
                     autoSaveCookie(form_data);
                 });
             });
+        }else{
+            this.find('input, select, textarea').each(function(index)
+            {
+                $(this).unbind("change");
+                $(this).unbind("keyup");
+            });
         }
 
 
