@@ -177,6 +177,8 @@
                     if(strpos(value, ':::--MULTISELECTSPLITTER--:::') > 0)
                     {
                         var tmp_array = value.split(':::--MULTISELECTSPLITTER--:::');
+                        
+                        $('input[name="+ $key +"]').prop('checked', false);
 
                         $.each(tmp_array, function(tmp_key, tmp_value)
                         {
